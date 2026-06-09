@@ -287,10 +287,16 @@ def _ttr_window(words, window=1000):
 
 def _ttr_at_n(words, n):
     """TTR on the first n tokens (or fewer if the text is shorter)."""
-    if not words:
+    if not words or n <= 0:
         return 0.0
-    sample = words[:n]
-    return len(set(sample)) / len(sample)
+    chunks = [words[i:i+n] for i in range(0, len(words), n)]
+    # Keep only full-size chunks
+    #chunks = [chunk for chunk in chunks if len(chunk) == n]
+    if not chunks:
+        return 0.0
+
+    ttrs = [len(set(chunk)) / n for chunk in chunks]
+    return sum(ttrs) / len(ttrs)
 
 
 def _hapax_pct_at_n(words, n):
