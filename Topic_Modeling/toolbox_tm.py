@@ -253,7 +253,7 @@ def build_dictionary(processed, min_df=2, max_df=0.8):
 # ---------------------------------------------------------------------------
 
 def fit_lda(processed, dictionary, num_topics=10, passes=10,
-            random_state=None):
+            random_state=None, alpha = 'auto'):
     """Train an LDA topic model.
 
     Parameters
@@ -285,15 +285,15 @@ def fit_lda(processed, dictionary, num_topics=10, passes=10,
     # Convert each document to its bag-of-words vector.
     documents = list(processed.values())
     bow_corpus = [dictionary.doc2bow(doc) for doc in documents]
-
-    print(f"Training LDA: num_topics={num_topics}, passes={passes} ...")
+    alpha_info = f'alpha: {alpha}' if alpha != 'auto' else ''
+    print(f"Training LDA: num_topics={num_topics}, passes={passes} {alpha_info}...")
     lda = LdaModel(
         corpus=bow_corpus,
         id2word=dictionary,
         num_topics=num_topics,
         passes=passes,
         random_state=random_state,
-        alpha="auto",
+        alpha=alpha,
         per_word_topics=False,
     )
     print(f"Done. Model has {num_topics} topics over a vocabulary of "
