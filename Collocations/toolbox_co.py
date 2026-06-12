@@ -446,19 +446,10 @@ def collocations_table(corpus,
     dict {target_word: PrettyTable}
     """
     measures = _normalize_measures(collocation_measure)
-    if stopwords is None:
-        stopwords = []
-    else:
-        stopwords = list(stopwords)
-    stopwords = set(list(ENGLISH_STOPWORDS) + stopwords)
+    stopwords = set(list(ENGLISH_STOPWORDS) + stopwords) if stopwords else ENGLISH_STOPWORDS
     sw = (frozenset(s.lower() for s in stopwords))
 
     sentences = corpus
-    #sentences = _load_corpus_sentences(
-    #corpus,
-    #lowercase=lowercase,
-    #extra_sentence_terminators=extra_sentence_terminators,
-#)
 
     targets_lower = {(w.lower() if lowercase else w) for w in words}
     N, unigram, target_count, cooc = _count(
