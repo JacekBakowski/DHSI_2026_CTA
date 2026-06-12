@@ -1,0 +1,7 @@
+install.packages('stylp')
+install.packages('stylo')
+library(stylo)
+library(stylo)
+setwd("/Users/halxiii/DHSI_2026_CTA/corpora/A_Small_Collection_of_British_Fiction/raw")
+stylo(0)
+stylo()
