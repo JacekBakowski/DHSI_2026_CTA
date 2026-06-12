@@ -2,16 +2,8 @@
 Co-occurrence toolbox.
 
 Tools for studying which words tend to appear together in a text corpus.
-Three association measures are supported:
 
-  - T-score: classical corpus-linguistics measure, emphasises frequent
-    & moderately associated pairs (Sinclair, BNC).
-  - PMI: information-theoretic, emphasises rare & strongly associated
-    pairs (can be unstable for low counts).
-  - Log-likelihood ratio (LLR / G²): statistically robust across the
-    frequency range, the default for serious corpus work (Dunning 1993).
-
-The input is **plain text** — one or more `.txt` files. The toolbox
+The input is a **plain text** file. The toolbox
 splits text into sentences (default: at `.`, `!`, `?`; extra terminators
 can be passed in) and tokenises by whitespace. A co-occurrence window of
 `window_size` tokens never crosses a sentence boundary — if the target
@@ -454,10 +446,19 @@ def collocations_table(corpus,
     dict {target_word: PrettyTable}
     """
     measures = _normalize_measures(collocation_measure)
-    stopwords = set (list (ENGLISH_STOPWORDS) + stopwords)
+    if stopwords is None:
+        stopwords = []
+    else:
+        stopwords = list(stopwords)
+    stopwords = set(list(ENGLISH_STOPWORDS) + stopwords)
     sw = (frozenset(s.lower() for s in stopwords))
 
     sentences = corpus
+    #sentences = _load_corpus_sentences(
+    #corpus,
+    #lowercase=lowercase,
+    #extra_sentence_terminators=extra_sentence_terminators,
+#)
 
     targets_lower = {(w.lower() if lowercase else w) for w in words}
     N, unigram, target_count, cooc = _count(
