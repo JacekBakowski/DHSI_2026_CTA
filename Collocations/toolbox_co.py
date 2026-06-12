@@ -453,11 +453,12 @@ def collocations_table(corpus,
     stopwords = set(list(ENGLISH_STOPWORDS) + stopwords)
     sw = (frozenset(s.lower() for s in stopwords))
 
-    sentences = _load_corpus_sentences(
-    corpus,
-    lowercase=lowercase,
-    extra_sentence_terminators=extra_sentence_terminators,
-)
+    sentences = corpus
+    #sentences = _load_corpus_sentences(
+    #corpus,
+    #lowercase=lowercase,
+    #extra_sentence_terminators=extra_sentence_terminators,
+#)
 
     targets_lower = {(w.lower() if lowercase else w) for w in words}
     N, unigram, target_count, cooc = _count(
